@@ -22,7 +22,7 @@ const SymbolismExplorerPage = () => {
       </div>
 
       <div style={{ width: '80%', maxWidth: '600px', margin: '30px auto', background: '#FFF', padding: '20px', borderRadius: '10px', textAlign: 'center' }}>
-        {aiWith === 'text' ? <SymbolismText /> : <SymbolismImg />} {/* Ensure SymbolismImg is correctly defined */}
+        {aiWith === 'text' ? <SymbolismText /> : null} 
       </div>
 
       <Link href="/" style={{ position: 'absolute', bottom: '20px', right: '20px', backgroundColor: '#FFF', padding: '10px 20px', border: '1px solid #000', borderRadius: '5px', textDecoration: 'none', color: '#000', fontFamily: 'Courier New, monospace', fontWeight: 'bold' }}>Back</Link>
