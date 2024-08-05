@@ -14,14 +14,14 @@ import {
   getDoc,
   updateDoc,
 } from 'firebase/firestore'
-
+import Link from 'next/link';
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'rgba(0, 0, 0, 0.7)',
+  bgcolor: '#f8f9fa',
   border: '2px solid #fff',
   boxShadow: 24,
   p: 4,
@@ -33,41 +33,45 @@ const style = {
 const cardStyle = {
   minWidth: 275,
   margin: '8px 0',
-  background: 'linear-gradient(to bottom right, #6a0dad, #000000)',
+  background: 'linear-gradient(to bottom right, #d4a5a5, #ffffff)',
   color: '#fff',
 }
 
 const buttonStyles = {
   add: {
-    background: 'linear-gradient(to right, #00FF00, #004d00)',
+    background: 'linear-gradient(to right, #a8dadc, #457b9d)',
     color: '#fff',
   },
   remove: {
-    background: 'linear-gradient(to right, #FF6347, #b22a00)',
+    background: 'linear-gradient(to right, #ff6b6b, #f07b7b)',
     color: '#fff',
   },
   update: {
-    background: 'linear-gradient(to right, #FFFF00, #cccc00)',
+    background: 'linear-gradient(to right, #ffe066, #f9ed69)',
+    color: '#000',
+  },
+  generate: {
+    background: 'linear-gradient(to right, #b9fbc0, #6d9dc5)', // Pastel gradient
     color: '#000',
   },
 }
 
 const searchBarStyles = {
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  color: '#fff',
+  backgroundColor: '#f1f1f1',
+  color: '#000',
   border: '1px solid #fff',
   '& .MuiInputBase-input::placeholder': {
-    color: '#fff',
+    color: '#000',
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: '#fff',
+      borderColor: '#ddd',
     },
     '&:hover fieldset': {
-      borderColor: '#fff',
+      borderColor: '#ddd',
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#fff',
+      borderColor: '#ddd',
     },
   },
 }
@@ -151,11 +155,21 @@ export default function Home() {
       gap={2}
       padding={2}
       sx={{
-        backgroundImage: 'url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/59366613-7339-44b6-8e36-f4a4edf88ad1/dhugrys-915c4514-c2b0-4928-afb9-4e4c6b561e9c.png/v1/fit/w_828,h_466,q_70,strp/alien_world_discovery_by_devillivedcyn_dhugrys-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU5MzY2NjEzLTczMzktNDRiNi04ZTM2LWY0YTRlZGY4OGFkMVwvZGh1Z3J5cy05MTVjNDUxNC1jMmIwLTQ5MjgtYWZiOS00ZTRjNmI1NjFlOWMucG5nIiwiaGVpZ2h0IjoiPD03MjAiLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS53YXRlcm1hcmsiXSwid21rIjp7InBhdGgiOiJcL3dtXC81OTM2NjYxMy03MzM5LTQ0YjYtOGUzNi1mNGE0ZWRmODhhZDFcL2RldmlsbGl2ZWRjeW4tNC5wbmciLCJvcGFjaXR5Ijo5NSwicHJvcG9ydGlvbnMiOjAuNDUsImdyYXZpdHkiOiJjZW50ZXIifX0.b0hHwHbQeMT_s7ZgwizdOoVLQWLoB9R4CaIX-NOCBSE)',
+        backgroundImage: 'url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/eae8a3eb-7b8f-4680-a177-64afc2f067b3/dgyjeju-ef2ff01a-35c6-41cd-b9ad-35c1f4daa717.jpg/v1/fit/w_828,h_464,q_70,strp/chihiro_and_haku_by_elka0815_dgyjeju-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzE4IiwicGF0aCI6IlwvZlwvZWFlOGEzZWItN2I4Zi00NjgwLWExNzctNjRhZmMyZjA2N2IzXC9kZ3lqZWp1LWVmMmZmMDFhLTM1YzYtNDFjZC1iOWFkLTM1YzFmNGRhYTcxNy5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.Lw-0pJGS2UkaDMVO5rfE0nfpbLuCkCe0r_nGUkmWKWg)',
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
       }}
-    >
+    > <Typography variant="h2" component="div" sx={{ color: '#fff', mb: 2 }}>
+    DragonScribe
+  </Typography>
+  <Button
+    variant="contained"
+    sx={buttonStyles.generate}
+    component={Link}
+    href="/symbolism-explorer"
+  >
+    Generate Story
+  </Button>
       <Modal
         open={open}
         onClose={handleClose}
