@@ -1,6 +1,6 @@
-# Story Generator
+# DragonScribe
 
-The **Story Generator** is a dynamic web application that enables users to craft imaginative stories by simply inputting a desired word count. Users can customize their stories by providing specific characters, objects, and scenarios as story elements. This tool is perfect for sparking creativity, overcoming writer's block, and generating unique tales effortlessly. 
+The **DragonScribe** is a dynamic web application that enables users to craft imaginative stories by simply inputting a desired word count. Users can customize their stories by providing specific characters, objects, and scenarios as story elements. This tool is perfect for sparking creativity, overcoming writer's block, and generating unique tales effortlessly. 
 
 ## Features
 
